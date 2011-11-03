@@ -20,7 +20,7 @@ getopts( "$opt_string", \%opt ); # or &usage();
 my $event_type = $opt{'e'} || 'hello';
 my $message = $opt{'m'} || '';
 
-my $event = Kynetx::Raise->new('echo',
+my $event = Kinetic::Raise->new('echo',
 			       $event_type,
 			       'a16x66',
 			       {'host' => '127.0.0.1'}
