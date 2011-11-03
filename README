@@ -10,7 +10,7 @@ use Getopt::Std;
 use LWP::Simple;
 use JSON::XS;
 
-use Kynetx::Raise;
+use Kinetic::Raise;
 
 # global options
 use vars qw/ %opt /;
