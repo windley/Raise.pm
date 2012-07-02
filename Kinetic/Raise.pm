@@ -42,6 +42,20 @@ sub new {
 	      'version' => $version,
 	      'scheme' => $options->{'schema'} || 'http',
 	     };
+
+  if ($self->{'version'} eq 'blue' && $self->{'rids'} eq []) {
+    die 'RIDS must be defined for Blue'
+  }
+
+  if ($self->{'event_domain'} eq '' || ! defined $self->{'event_domain'}){
+    die 'Event domain must be defined'
+  }
+
+  if ($self->{'event_type'} eq '' || ! defined $self->{'event_type'}){
+    die 'Event type must be defined'
+  }
+
+
   bless($self, $class); # consecrate
   return $self;
 }
@@ -103,3 +117,4 @@ sub raise {
 
 
 1;
+

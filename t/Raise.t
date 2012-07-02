@@ -39,5 +39,11 @@ like($ev2->mk_url(),
     );
 
 
+like($ev2->mk_url({"foo" => "bar"}),
+     qr#http://cs.kobj.net/sky/event/[\da-f-]+/\d+\?foo=bar&_domain=echo&_type=hello$#,
+     "Sky; No options"
+    );
+
+
 
 done_testing();
