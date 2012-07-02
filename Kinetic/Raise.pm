@@ -22,12 +22,13 @@ sub new {
   my $invocant = shift;
   my $event_domain = shift;
   my $event_type = shift;
-  my $rids = shift;
   my $options = shift;
   my $class = ref($invocant) || $invocant;
   
-  unless (ref $rids eq 'ARRAY') {
-    $rids = [split(';',$rids)];
+  if ($options->{'rids'}) {
+    unless (ref $options->{'rids'} eq 'ARRAY') {
+      $options->{'rids'} = [split(';',$options->{'rids'})];
+    }
   }
 
   # if you define an ECI, then its SKY
@@ -35,7 +36,7 @@ sub new {
 
   my $self = {'event_domain' => $event_domain,
 	      'event_type' => $event_type,
-	      'rids' => $rids,
+	      'rids' => $options->{'rids'} || [],
 	      'host' => $options->{'host'} || 'cs.kobj.net',
 	      'eci' => $options->{'eci'}, 
 	      'version' => $version,

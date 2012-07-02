@@ -20,7 +20,6 @@ my $message = $opt{'m'} || '';
 
 my $event = Kinetic::Raise->new('echo',
 			       $event_type,
-			       '',
 			       {'eci' => $eci}
 			       );
 

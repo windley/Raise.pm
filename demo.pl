@@ -17,8 +17,8 @@ my $message = $opt{'m'} || '';
 
 my $event = Kinetic::Raise->new('echo',
 			       $event_type,
-			       'a16x66',
-			       {'host' => 'cs.kobj.net'}
+			       {'rids' => 'a16x66',
+				'host' => 'cs.kobj.net'}
 			       );
 
 my $response = $event->raise({'input' => $message});

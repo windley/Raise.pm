@@ -12,8 +12,8 @@ use Kinetic::Raise;
 
 my $ev1 = Kinetic::Raise->new('echo',
 			      'hello',
-			      'a16x66',
-			      {'host' => 'cs.kobj.net'}
+			      {'rids' => 'a16x66',
+			       'host' => 'cs.kobj.net'}
 			     );
 
 like($ev1->mk_url(),
@@ -30,7 +30,6 @@ like($ev1->mk_url({"foo" => "bar"}),
 
 my $ev2 = Kinetic::Raise->new('echo',
 			      'hello',
-			      '',
 			      {'eci' => 'd799ed90-a6c7-012f-7e5d-00163e64d091'}
 			     );
 
