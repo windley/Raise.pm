@@ -30,11 +30,15 @@ sub new {
     $rids = [split(';',$rids)];
   }
 
+  # if you define an ECI, then its SKY
+  my $version = $options->{'eci'} ? 'sky' : 'blue';
+
   my $self = {'event_domain' => $event_domain,
 	      'event_type' => $event_type,
 	      'rids' => $rids,
 	      'host' => $options->{'host'} || 'cs.kobj.net',
-	      'version' => $options->{'version'} || 'blue',
+	      'eci' => $options->{'eci'}, 
+	      'version' => $version,
 	      'scheme' => $options->{'schema'} || 'http',
 	     };
   bless($self, $class); # consecrate
@@ -50,7 +54,11 @@ sub mk_url {
     push @{ $queries }, "$k=$options->{$k}";
   }
 
-  return $self->{'scheme'} ."://" .
+  
+  my $url = "";
+
+  if ($self->{'version'} eq 'blue') {
+    $url = $self->{'scheme'} ."://" .
          join('/', @{[$self->{'host'},
 		      $self->{'version'},
 		      'event',
@@ -60,13 +68,29 @@ sub mk_url {
 		      time
 		      ]}) .
 	'?' . join('&', @{$queries});
+  } elsif ($self->{'version'} eq 'sky') {
+
+    push(@{$queries}, "_domain=". $self->{'event_domain'});
+    push(@{$queries}, "_type=". $self->{'event_type'});
+    push(@{$queries}, "_rids=". join(';', @{$self->{'rids'}})) unless join(';', @{$self->{'rids'}}) eq '' ;
+    $url = $self->{'scheme'} ."://" .
+         join('/', @{[$self->{'host'},
+		      $self->{'version'},
+		      'event',
+		      $self->{'eci'},
+		      time
+		      ]}) .
+	'?' . join('&', @{$queries});
+  } 
+
+  return $url;
 }
 
 sub raise {
   my $self = shift;
   my $options = shift;
 
-  my $response = get($self->mk_url($options));
+  my $response = get($self->mk_url($options)) || "";
 
   # strip comments
   $response =~ s#//.*\n##g;
