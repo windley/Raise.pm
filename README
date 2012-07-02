@@ -1,52 +1,9 @@
 
 This is a sample Perl module for creating Kinetic Event Architecture endpoints. 
 
-The following show how it can be used:
+The module supports both the Blue and Sky versions of EXP (http://developer.kynetx.com/display/docs/Sky+Event+API)
 
-#!/usr/bin/perl -w
-use strict;
+See demo.pl for an example of using it with Blue.
 
-use Getopt::Std;
-use LWP::Simple;
-use JSON::XS;
+See demo_sky.pl for an example of using it with Sky. 
 
-use Kinetic::Raise;
-
-# global options
-use vars qw/ %opt /;
-my $opt_string = 'h?e:m:';
-getopts( "$opt_string", \%opt ); # or &usage();
-
-my $event_type = $opt{'e'} || 'hello';
-my $message = $opt{'m'} || '';
-
-my $event = Kinetic::Raise->new('echo',
-			       $event_type,
-			       'a16x66',
-			       {'host' => '127.0.0.1'}
-			       );
-
-my $response = $event->raise({'input' => $message});
-
-foreach my $d (@{$response->{'directives'}}) {
-  if ($d->{'name'} eq 'say') {
-    print $d->{'options'}->{'something'}, "\n";
-  }
-}
-
-
-The following KRL rules would respond to echo events raised by the preceding code:
-
-rule hello_world is active {
-  select when echo hello
-  send_directive("say") with
-    something = "Hello World";
-}
-  
-rule echo is active {
-  select when echo message input "(.*)" setting(m)
-  send_directive("say") with
-    something = m;
-}
-
-See http://www.windley.com/archives/2010/06/a_big_programmable_event_loop_in_the_cloud.shtml for a detailed explantion. 
