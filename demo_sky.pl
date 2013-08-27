@@ -7,8 +7,8 @@ use JSON::XS;
 
 use Kinetic::Raise;
 
-# must be an eci to a PEN with a16x66 or similar installed
-my $eci = 'd799ed90-a6c7-012f-7e5d-00163e64d091';
+# must be an eci to a pico with a16x66 or similar installed
+my $eci = 'XXXX-XXXX-XXXX-XXXX';
 
 # global options
 use vars qw/ %opt /;
